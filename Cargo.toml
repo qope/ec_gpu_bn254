@@ -1,0 +1,16 @@
+[package]
+name = "ec_gpu_bn254"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pairing = {package = "pairing_ce", version = "0.21.*" }
+ec-gpu = "0.2"
+ec-gpu-gen = "0.5.1"
+blstrs = { version = "0.6.0", features = ["__private_bench", "gpu"] }
+
+[features]
+default = ["opencl"]
+opencl = ["ec-gpu-gen/opencl"]
