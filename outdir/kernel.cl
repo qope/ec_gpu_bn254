@@ -249,18 +249,18 @@ uint32_t chain_madhi(chain_t *ch, uint32_t a, uint32_t b, uint32_t c) {
 #endif
 
 
-#define blstrs__scalar__Scalar_limb ulong
-#define blstrs__scalar__Scalar_LIMBS 4
-#define blstrs__scalar__Scalar_LIMB_BITS 64
-#define blstrs__scalar__Scalar_INV 18446744069414584319
-typedef struct { blstrs__scalar__Scalar_limb val[blstrs__scalar__Scalar_LIMBS]; } blstrs__scalar__Scalar;
-CONSTANT blstrs__scalar__Scalar blstrs__scalar__Scalar_ONE = { { 8589934590, 6378425256633387010, 11064306276430008309, 1739710354780652911 } };
-CONSTANT blstrs__scalar__Scalar blstrs__scalar__Scalar_P = { { 18446744069414584321, 6034159408538082302, 3691218898639771653, 8353516859464449352 } };
-CONSTANT blstrs__scalar__Scalar blstrs__scalar__Scalar_R2 = { { 14526898881837571181, 3129137299524312099, 419701826671360399, 524908885293268753 } };
-CONSTANT blstrs__scalar__Scalar blstrs__scalar__Scalar_ZERO = { { 0, 0, 0, 0 } };
+#define bn254_builder__Scalar_limb ulong
+#define bn254_builder__Scalar_LIMBS 4
+#define bn254_builder__Scalar_LIMB_BITS 64
+#define bn254_builder__Scalar_INV 9786893198990664585
+typedef struct { bn254_builder__Scalar_limb val[bn254_builder__Scalar_LIMBS]; } bn254_builder__Scalar;
+CONSTANT bn254_builder__Scalar bn254_builder__Scalar_ONE = { { 15230403791020821917, 754611498739239741, 7381016538464732716, 1011752739694698287 } };
+CONSTANT bn254_builder__Scalar bn254_builder__Scalar_P = { { 4332616871279656263, 10917124144477883021, 13281191951274694749, 3486998266802970665 } };
+CONSTANT bn254_builder__Scalar bn254_builder__Scalar_R2 = { { 17522657719365597833, 13107472804851548667, 5164255478447964150, 493319470278259999 } };
+CONSTANT bn254_builder__Scalar bn254_builder__Scalar_ZERO = { { 0, 0, 0, 0 } };
 #if defined(OPENCL_NVIDIA) || defined(CUDA)
 
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_sub_nvidia(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_sub_nvidia(bn254_builder__Scalar a, bn254_builder__Scalar b) {
 asm("sub.cc.u64 %0, %0, %4;\r\n"
 "subc.cc.u64 %1, %1, %5;\r\n"
 "subc.cc.u64 %2, %2, %6;\r\n"
@@ -269,7 +269,7 @@ asm("sub.cc.u64 %0, %0, %4;\r\n"
 :"l"(b.val[0]), "l"(b.val[1]), "l"(b.val[2]), "l"(b.val[3]));
 return a;
 }
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_add_nvidia(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_add_nvidia(bn254_builder__Scalar a, bn254_builder__Scalar b) {
 asm("add.cc.u64 %0, %0, %4;\r\n"
 "addc.cc.u64 %1, %1, %5;\r\n"
 "addc.cc.u64 %2, %2, %6;\r\n"
@@ -283,18 +283,18 @@ return a;
 // FinalityLabs - 2019
 // Arbitrary size prime-field arithmetic library (add, sub, mul, pow)
 
-#define blstrs__scalar__Scalar_BITS (blstrs__scalar__Scalar_LIMBS * blstrs__scalar__Scalar_LIMB_BITS)
-#if blstrs__scalar__Scalar_LIMB_BITS == 32
-  #define blstrs__scalar__Scalar_mac_with_carry mac_with_carry_32
-  #define blstrs__scalar__Scalar_add_with_carry add_with_carry_32
-#elif blstrs__scalar__Scalar_LIMB_BITS == 64
-  #define blstrs__scalar__Scalar_mac_with_carry mac_with_carry_64
-  #define blstrs__scalar__Scalar_add_with_carry add_with_carry_64
+#define bn254_builder__Scalar_BITS (bn254_builder__Scalar_LIMBS * bn254_builder__Scalar_LIMB_BITS)
+#if bn254_builder__Scalar_LIMB_BITS == 32
+  #define bn254_builder__Scalar_mac_with_carry mac_with_carry_32
+  #define bn254_builder__Scalar_add_with_carry add_with_carry_32
+#elif bn254_builder__Scalar_LIMB_BITS == 64
+  #define bn254_builder__Scalar_mac_with_carry mac_with_carry_64
+  #define bn254_builder__Scalar_add_with_carry add_with_carry_64
 #endif
 
 // Greater than or equal
-DEVICE bool blstrs__scalar__Scalar_gte(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  for(char i = blstrs__scalar__Scalar_LIMBS - 1; i >= 0; i--){
+DEVICE bool bn254_builder__Scalar_gte(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  for(char i = bn254_builder__Scalar_LIMBS - 1; i >= 0; i--){
     if(a.val[i] > b.val[i])
       return true;
     if(a.val[i] < b.val[i])
@@ -304,8 +304,8 @@ DEVICE bool blstrs__scalar__Scalar_gte(blstrs__scalar__Scalar a, blstrs__scalar_
 }
 
 // Equals
-DEVICE bool blstrs__scalar__Scalar_eq(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  for(uchar i = 0; i < blstrs__scalar__Scalar_LIMBS; i++)
+DEVICE bool bn254_builder__Scalar_eq(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  for(uchar i = 0; i < bn254_builder__Scalar_LIMBS; i++)
     if(a.val[i] != b.val[i])
       return false;
   return true;
@@ -313,22 +313,22 @@ DEVICE bool blstrs__scalar__Scalar_eq(blstrs__scalar__Scalar a, blstrs__scalar__
 
 // Normal addition
 #if defined(OPENCL_NVIDIA) || defined(CUDA)
-  #define blstrs__scalar__Scalar_add_ blstrs__scalar__Scalar_add_nvidia
-  #define blstrs__scalar__Scalar_sub_ blstrs__scalar__Scalar_sub_nvidia
+  #define bn254_builder__Scalar_add_ bn254_builder__Scalar_add_nvidia
+  #define bn254_builder__Scalar_sub_ bn254_builder__Scalar_sub_nvidia
 #else
-  DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_add_(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+  DEVICE bn254_builder__Scalar bn254_builder__Scalar_add_(bn254_builder__Scalar a, bn254_builder__Scalar b) {
     bool carry = 0;
-    for(uchar i = 0; i < blstrs__scalar__Scalar_LIMBS; i++) {
-      blstrs__scalar__Scalar_limb old = a.val[i];
+    for(uchar i = 0; i < bn254_builder__Scalar_LIMBS; i++) {
+      bn254_builder__Scalar_limb old = a.val[i];
       a.val[i] += b.val[i] + carry;
       carry = carry ? old >= a.val[i] : old > a.val[i];
     }
     return a;
   }
-  blstrs__scalar__Scalar blstrs__scalar__Scalar_sub_(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+  bn254_builder__Scalar bn254_builder__Scalar_sub_(bn254_builder__Scalar a, bn254_builder__Scalar b) {
     bool borrow = 0;
-    for(uchar i = 0; i < blstrs__scalar__Scalar_LIMBS; i++) {
-      blstrs__scalar__Scalar_limb old = a.val[i];
+    for(uchar i = 0; i < bn254_builder__Scalar_LIMBS; i++) {
+      bn254_builder__Scalar_limb old = a.val[i];
       a.val[i] -= b.val[i] + borrow;
       borrow = borrow ? old <= a.val[i] : old < a.val[i];
     }
@@ -337,16 +337,16 @@ DEVICE bool blstrs__scalar__Scalar_eq(blstrs__scalar__Scalar a, blstrs__scalar__
 #endif
 
 // Modular subtraction
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_sub(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  blstrs__scalar__Scalar res = blstrs__scalar__Scalar_sub_(a, b);
-  if(!blstrs__scalar__Scalar_gte(a, b)) res = blstrs__scalar__Scalar_add_(res, blstrs__scalar__Scalar_P);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_sub(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  bn254_builder__Scalar res = bn254_builder__Scalar_sub_(a, b);
+  if(!bn254_builder__Scalar_gte(a, b)) res = bn254_builder__Scalar_add_(res, bn254_builder__Scalar_P);
   return res;
 }
 
 // Modular addition
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_add(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  blstrs__scalar__Scalar res = blstrs__scalar__Scalar_add_(a, b);
-  if(blstrs__scalar__Scalar_gte(res, blstrs__scalar__Scalar_P)) res = blstrs__scalar__Scalar_sub_(res, blstrs__scalar__Scalar_P);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_add(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  bn254_builder__Scalar res = bn254_builder__Scalar_add_(a, b);
+  if(bn254_builder__Scalar_gte(res, bn254_builder__Scalar_P)) res = bn254_builder__Scalar_sub_(res, bn254_builder__Scalar_P);
   return res;
 }
 
@@ -364,11 +364,11 @@ DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_add(blstrs__scalar__Scalar 
 //     arithmetic on the GPU
 //     https://ieeexplore.ieee.org/document/8464792
 
-DEVICE void blstrs__scalar__Scalar_reduce(uint32_t accLow[blstrs__scalar__Scalar_LIMBS], uint32_t np0, uint32_t fq[blstrs__scalar__Scalar_LIMBS]) {
+DEVICE void bn254_builder__Scalar_reduce(uint32_t accLow[bn254_builder__Scalar_LIMBS], uint32_t np0, uint32_t fq[bn254_builder__Scalar_LIMBS]) {
   // accLow is an IN and OUT vector
   // count must be even
-  const uint32_t count = blstrs__scalar__Scalar_LIMBS;
-  uint32_t accHigh[blstrs__scalar__Scalar_LIMBS];
+  const uint32_t count = bn254_builder__Scalar_LIMBS;
+  uint32_t accHigh[bn254_builder__Scalar_LIMBS];
   uint32_t bucket=0, lowCarry=0, highCarry=0, q;
   int32_t  i, j;
 
@@ -448,11 +448,11 @@ DEVICE void blstrs__scalar__Scalar_reduce(uint32_t accLow[blstrs__scalar__Scalar
 
 // Requirement: yLimbs >= xLimbs
 DEVICE inline
-void blstrs__scalar__Scalar_mult_v1(uint32_t *x, uint32_t *y, uint32_t *xy) {
-  const uint32_t xLimbs  = blstrs__scalar__Scalar_LIMBS;
-  const uint32_t yLimbs  = blstrs__scalar__Scalar_LIMBS;
-  const uint32_t xyLimbs = blstrs__scalar__Scalar_LIMBS * 2;
-  uint32_t temp[blstrs__scalar__Scalar_LIMBS * 2];
+void bn254_builder__Scalar_mult_v1(uint32_t *x, uint32_t *y, uint32_t *xy) {
+  const uint32_t xLimbs  = bn254_builder__Scalar_LIMBS;
+  const uint32_t yLimbs  = bn254_builder__Scalar_LIMBS;
+  const uint32_t xyLimbs = bn254_builder__Scalar_LIMBS * 2;
+  uint32_t temp[bn254_builder__Scalar_LIMBS * 2];
   uint32_t carry = 0;
 
   #pragma unroll
@@ -510,35 +510,35 @@ void blstrs__scalar__Scalar_mult_v1(uint32_t *x, uint32_t *y, uint32_t *xy) {
   }
 }
 
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mul_nvidia(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_mul_nvidia(bn254_builder__Scalar a, bn254_builder__Scalar b) {
   // Perform full multiply
-  limb ab[2 * blstrs__scalar__Scalar_LIMBS];
-  blstrs__scalar__Scalar_mult_v1(a.val, b.val, ab);
+  limb ab[2 * bn254_builder__Scalar_LIMBS];
+  bn254_builder__Scalar_mult_v1(a.val, b.val, ab);
 
-  uint32_t io[blstrs__scalar__Scalar_LIMBS];
+  uint32_t io[bn254_builder__Scalar_LIMBS];
   #pragma unroll
-  for(int i=0;i<blstrs__scalar__Scalar_LIMBS;i++) {
+  for(int i=0;i<bn254_builder__Scalar_LIMBS;i++) {
     io[i]=ab[i];
   }
-  blstrs__scalar__Scalar_reduce(io, blstrs__scalar__Scalar_INV, blstrs__scalar__Scalar_P.val);
+  bn254_builder__Scalar_reduce(io, bn254_builder__Scalar_INV, bn254_builder__Scalar_P.val);
 
   // Add io to the upper words of ab
-  ab[blstrs__scalar__Scalar_LIMBS] = add_cc(ab[blstrs__scalar__Scalar_LIMBS], io[0]);
+  ab[bn254_builder__Scalar_LIMBS] = add_cc(ab[bn254_builder__Scalar_LIMBS], io[0]);
   int j;
   #pragma unroll
-  for (j = 1; j < blstrs__scalar__Scalar_LIMBS - 1; j++) {
-    ab[j + blstrs__scalar__Scalar_LIMBS] = addc_cc(ab[j + blstrs__scalar__Scalar_LIMBS], io[j]);
+  for (j = 1; j < bn254_builder__Scalar_LIMBS - 1; j++) {
+    ab[j + bn254_builder__Scalar_LIMBS] = addc_cc(ab[j + bn254_builder__Scalar_LIMBS], io[j]);
   }
-  ab[2 * blstrs__scalar__Scalar_LIMBS - 1] = addc(ab[2 * blstrs__scalar__Scalar_LIMBS - 1], io[blstrs__scalar__Scalar_LIMBS - 1]);
+  ab[2 * bn254_builder__Scalar_LIMBS - 1] = addc(ab[2 * bn254_builder__Scalar_LIMBS - 1], io[bn254_builder__Scalar_LIMBS - 1]);
 
-  blstrs__scalar__Scalar r;
+  bn254_builder__Scalar r;
   #pragma unroll
-  for (int i = 0; i < blstrs__scalar__Scalar_LIMBS; i++) {
-    r.val[i] = ab[i + blstrs__scalar__Scalar_LIMBS];
+  for (int i = 0; i < bn254_builder__Scalar_LIMBS; i++) {
+    r.val[i] = ab[i + bn254_builder__Scalar_LIMBS];
   }
 
-  if (blstrs__scalar__Scalar_gte(r, blstrs__scalar__Scalar_P)) {
-    r = blstrs__scalar__Scalar_sub_(r, blstrs__scalar__Scalar_P);
+  if (bn254_builder__Scalar_gte(r, bn254_builder__Scalar_P)) {
+    r = bn254_builder__Scalar_sub_(r, bn254_builder__Scalar_P);
   }
 
   return r;
@@ -547,113 +547,113 @@ DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mul_nvidia(blstrs__scalar__
 #endif
 
 // Modular multiplication
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mul_default(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_mul_default(bn254_builder__Scalar a, bn254_builder__Scalar b) {
   /* CIOS Montgomery multiplication, inspired from Tolga Acar's thesis:
    * https://www.microsoft.com/en-us/research/wp-content/uploads/1998/06/97Acar.pdf
    * Learn more:
    * https://en.wikipedia.org/wiki/Montgomery_modular_multiplication
    * https://alicebob.cryptoland.net/understanding-the-montgomery-reduction-algorithm/
    */
-  blstrs__scalar__Scalar_limb t[blstrs__scalar__Scalar_LIMBS + 2] = {0};
-  for(uchar i = 0; i < blstrs__scalar__Scalar_LIMBS; i++) {
-    blstrs__scalar__Scalar_limb carry = 0;
-    for(uchar j = 0; j < blstrs__scalar__Scalar_LIMBS; j++)
-      t[j] = blstrs__scalar__Scalar_mac_with_carry(a.val[j], b.val[i], t[j], &carry);
-    t[blstrs__scalar__Scalar_LIMBS] = blstrs__scalar__Scalar_add_with_carry(t[blstrs__scalar__Scalar_LIMBS], &carry);
-    t[blstrs__scalar__Scalar_LIMBS + 1] = carry;
+  bn254_builder__Scalar_limb t[bn254_builder__Scalar_LIMBS + 2] = {0};
+  for(uchar i = 0; i < bn254_builder__Scalar_LIMBS; i++) {
+    bn254_builder__Scalar_limb carry = 0;
+    for(uchar j = 0; j < bn254_builder__Scalar_LIMBS; j++)
+      t[j] = bn254_builder__Scalar_mac_with_carry(a.val[j], b.val[i], t[j], &carry);
+    t[bn254_builder__Scalar_LIMBS] = bn254_builder__Scalar_add_with_carry(t[bn254_builder__Scalar_LIMBS], &carry);
+    t[bn254_builder__Scalar_LIMBS + 1] = carry;
 
     carry = 0;
-    blstrs__scalar__Scalar_limb m = blstrs__scalar__Scalar_INV * t[0];
-    blstrs__scalar__Scalar_mac_with_carry(m, blstrs__scalar__Scalar_P.val[0], t[0], &carry);
-    for(uchar j = 1; j < blstrs__scalar__Scalar_LIMBS; j++)
-      t[j - 1] = blstrs__scalar__Scalar_mac_with_carry(m, blstrs__scalar__Scalar_P.val[j], t[j], &carry);
+    bn254_builder__Scalar_limb m = bn254_builder__Scalar_INV * t[0];
+    bn254_builder__Scalar_mac_with_carry(m, bn254_builder__Scalar_P.val[0], t[0], &carry);
+    for(uchar j = 1; j < bn254_builder__Scalar_LIMBS; j++)
+      t[j - 1] = bn254_builder__Scalar_mac_with_carry(m, bn254_builder__Scalar_P.val[j], t[j], &carry);
 
-    t[blstrs__scalar__Scalar_LIMBS - 1] = blstrs__scalar__Scalar_add_with_carry(t[blstrs__scalar__Scalar_LIMBS], &carry);
-    t[blstrs__scalar__Scalar_LIMBS] = t[blstrs__scalar__Scalar_LIMBS + 1] + carry;
+    t[bn254_builder__Scalar_LIMBS - 1] = bn254_builder__Scalar_add_with_carry(t[bn254_builder__Scalar_LIMBS], &carry);
+    t[bn254_builder__Scalar_LIMBS] = t[bn254_builder__Scalar_LIMBS + 1] + carry;
   }
 
-  blstrs__scalar__Scalar result;
-  for(uchar i = 0; i < blstrs__scalar__Scalar_LIMBS; i++) result.val[i] = t[i];
+  bn254_builder__Scalar result;
+  for(uchar i = 0; i < bn254_builder__Scalar_LIMBS; i++) result.val[i] = t[i];
 
-  if(blstrs__scalar__Scalar_gte(result, blstrs__scalar__Scalar_P)) result = blstrs__scalar__Scalar_sub_(result, blstrs__scalar__Scalar_P);
+  if(bn254_builder__Scalar_gte(result, bn254_builder__Scalar_P)) result = bn254_builder__Scalar_sub_(result, bn254_builder__Scalar_P);
 
   return result;
 }
 
 #ifdef CUDA
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mul(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  return blstrs__scalar__Scalar_mul_nvidia(a, b);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_mul(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  return bn254_builder__Scalar_mul_nvidia(a, b);
 }
 #else
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mul(blstrs__scalar__Scalar a, blstrs__scalar__Scalar b) {
-  return blstrs__scalar__Scalar_mul_default(a, b);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_mul(bn254_builder__Scalar a, bn254_builder__Scalar b) {
+  return bn254_builder__Scalar_mul_default(a, b);
 }
 #endif
 
 // Squaring is a special case of multiplication which can be done ~1.5x faster.
 // https://stackoverflow.com/a/16388571/1348497
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_sqr(blstrs__scalar__Scalar a) {
-  return blstrs__scalar__Scalar_mul(a, a);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_sqr(bn254_builder__Scalar a) {
+  return bn254_builder__Scalar_mul(a, a);
 }
 
 // Left-shift the limbs by one bit and subtract by modulus in case of overflow.
-// Faster version of blstrs__scalar__Scalar_add(a, a)
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_double(blstrs__scalar__Scalar a) {
-  for(uchar i = blstrs__scalar__Scalar_LIMBS - 1; i >= 1; i--)
-    a.val[i] = (a.val[i] << 1) | (a.val[i - 1] >> (blstrs__scalar__Scalar_LIMB_BITS - 1));
+// Faster version of bn254_builder__Scalar_add(a, a)
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_double(bn254_builder__Scalar a) {
+  for(uchar i = bn254_builder__Scalar_LIMBS - 1; i >= 1; i--)
+    a.val[i] = (a.val[i] << 1) | (a.val[i - 1] >> (bn254_builder__Scalar_LIMB_BITS - 1));
   a.val[0] <<= 1;
-  if(blstrs__scalar__Scalar_gte(a, blstrs__scalar__Scalar_P)) a = blstrs__scalar__Scalar_sub_(a, blstrs__scalar__Scalar_P);
+  if(bn254_builder__Scalar_gte(a, bn254_builder__Scalar_P)) a = bn254_builder__Scalar_sub_(a, bn254_builder__Scalar_P);
   return a;
 }
 
 // Modular exponentiation (Exponentiation by Squaring)
 // https://en.wikipedia.org/wiki/Exponentiation_by_squaring
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_pow(blstrs__scalar__Scalar base, uint exponent) {
-  blstrs__scalar__Scalar res = blstrs__scalar__Scalar_ONE;
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_pow(bn254_builder__Scalar base, uint exponent) {
+  bn254_builder__Scalar res = bn254_builder__Scalar_ONE;
   while(exponent > 0) {
     if (exponent & 1)
-      res = blstrs__scalar__Scalar_mul(res, base);
+      res = bn254_builder__Scalar_mul(res, base);
     exponent = exponent >> 1;
-    base = blstrs__scalar__Scalar_sqr(base);
+    base = bn254_builder__Scalar_sqr(base);
   }
   return res;
 }
 
 
 // Store squares of the base in a lookup table for faster evaluation.
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_pow_lookup(GLOBAL blstrs__scalar__Scalar *bases, uint exponent) {
-  blstrs__scalar__Scalar res = blstrs__scalar__Scalar_ONE;
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_pow_lookup(GLOBAL bn254_builder__Scalar *bases, uint exponent) {
+  bn254_builder__Scalar res = bn254_builder__Scalar_ONE;
   uint i = 0;
   while(exponent > 0) {
     if (exponent & 1)
-      res = blstrs__scalar__Scalar_mul(res, bases[i]);
+      res = bn254_builder__Scalar_mul(res, bases[i]);
     exponent = exponent >> 1;
     i++;
   }
   return res;
 }
 
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_mont(blstrs__scalar__Scalar a) {
-  return blstrs__scalar__Scalar_mul(a, blstrs__scalar__Scalar_R2);
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_mont(bn254_builder__Scalar a) {
+  return bn254_builder__Scalar_mul(a, bn254_builder__Scalar_R2);
 }
 
-DEVICE blstrs__scalar__Scalar blstrs__scalar__Scalar_unmont(blstrs__scalar__Scalar a) {
-  blstrs__scalar__Scalar one = blstrs__scalar__Scalar_ZERO;
+DEVICE bn254_builder__Scalar bn254_builder__Scalar_unmont(bn254_builder__Scalar a) {
+  bn254_builder__Scalar one = bn254_builder__Scalar_ZERO;
   one.val[0] = 1;
-  return blstrs__scalar__Scalar_mul(a, one);
+  return bn254_builder__Scalar_mul(a, one);
 }
 
 // Get `i`th bit (From most significant digit) of the field.
-DEVICE bool blstrs__scalar__Scalar_get_bit(blstrs__scalar__Scalar l, uint i) {
-  return (l.val[blstrs__scalar__Scalar_LIMBS - 1 - i / blstrs__scalar__Scalar_LIMB_BITS] >> (blstrs__scalar__Scalar_LIMB_BITS - 1 - (i % blstrs__scalar__Scalar_LIMB_BITS))) & 1;
+DEVICE bool bn254_builder__Scalar_get_bit(bn254_builder__Scalar l, uint i) {
+  return (l.val[bn254_builder__Scalar_LIMBS - 1 - i / bn254_builder__Scalar_LIMB_BITS] >> (bn254_builder__Scalar_LIMB_BITS - 1 - (i % bn254_builder__Scalar_LIMB_BITS))) & 1;
 }
 
 // Get `window` consecutive bits, (Starting from `skip`th bit) from the field.
-DEVICE uint blstrs__scalar__Scalar_get_bits(blstrs__scalar__Scalar l, uint skip, uint window) {
+DEVICE uint bn254_builder__Scalar_get_bits(bn254_builder__Scalar l, uint skip, uint window) {
   uint ret = 0;
   for(uint i = 0; i < window; i++) {
     ret <<= 1;
-    ret |= blstrs__scalar__Scalar_get_bit(l, skip + i);
+    ret |= bn254_builder__Scalar_get_bit(l, skip + i);
   }
   return ret;
 }
@@ -664,11 +664,11 @@ DEVICE uint blstrs__scalar__Scalar_get_bits(blstrs__scalar__Scalar l, uint skip,
 /*
  * FFT algorithm is inspired from: http://www.bealto.com/gpu-fft_group-1.html
  */
-KERNEL void blstrs__scalar__Scalar_radix_fft(GLOBAL blstrs__scalar__Scalar* x, // Source buffer
-                      GLOBAL blstrs__scalar__Scalar* y, // Destination buffer
-                      GLOBAL blstrs__scalar__Scalar* pq, // Precalculated twiddle factors
-                      GLOBAL blstrs__scalar__Scalar* omegas, // [omega, omega^2, omega^4, ...]
-                      LOCAL blstrs__scalar__Scalar* u_arg, // Local buffer to store intermediary values
+KERNEL void bn254_builder__Scalar_radix_fft(GLOBAL bn254_builder__Scalar* x, // Source buffer
+                      GLOBAL bn254_builder__Scalar* y, // Destination buffer
+                      GLOBAL bn254_builder__Scalar* pq, // Precalculated twiddle factors
+                      GLOBAL bn254_builder__Scalar* omegas, // [omega, omega^2, omega^4, ...]
+                      LOCAL bn254_builder__Scalar* u_arg, // Local buffer to store intermediary values
                       uint n, // Number of elements
                       uint lgp, // Log2 of `p` (Read more in the link above)
                       uint deg, // 1=>radix2, 2=>radix4, 3=>radix8, ...
@@ -678,9 +678,9 @@ KERNEL void blstrs__scalar__Scalar_radix_fft(GLOBAL blstrs__scalar__Scalar* x, /
 // ignore that argument and use the globally defined extern memory instead.
 #ifdef CUDA
   // There can only be a single dynamic shared memory item, hence cast it to the type we need.
-  blstrs__scalar__Scalar* u = (blstrs__scalar__Scalar*)cuda_shared;
+  bn254_builder__Scalar* u = (bn254_builder__Scalar*)cuda_shared;
 #else
-  LOCAL blstrs__scalar__Scalar* u = u_arg;
+  LOCAL bn254_builder__Scalar* u = u_arg;
 #endif
 
   uint lid = GET_LOCAL_ID();
@@ -700,11 +700,11 @@ KERNEL void blstrs__scalar__Scalar_radix_fft(GLOBAL blstrs__scalar__Scalar* x, /
   uint counte = counts + count / lsize;
 
   // Compute powers of twiddle
-  const blstrs__scalar__Scalar twiddle = blstrs__scalar__Scalar_pow_lookup(omegas, (n >> lgp >> deg) * k);
-  blstrs__scalar__Scalar tmp = blstrs__scalar__Scalar_pow(twiddle, counts);
+  const bn254_builder__Scalar twiddle = bn254_builder__Scalar_pow_lookup(omegas, (n >> lgp >> deg) * k);
+  bn254_builder__Scalar tmp = bn254_builder__Scalar_pow(twiddle, counts);
   for(uint i = counts; i < counte; i++) {
-    u[i] = blstrs__scalar__Scalar_mul(tmp, x[i*t]);
-    tmp = blstrs__scalar__Scalar_mul(tmp, twiddle);
+    u[i] = bn254_builder__Scalar_mul(tmp, x[i*t]);
+    tmp = bn254_builder__Scalar_mul(tmp, twiddle);
   }
   BARRIER_LOCAL();
 
@@ -716,9 +716,9 @@ KERNEL void blstrs__scalar__Scalar_radix_fft(GLOBAL blstrs__scalar__Scalar* x, /
       const uint i0 = (i << 1) - di;
       const uint i1 = i0 + bit;
       tmp = u[i0];
-      u[i0] = blstrs__scalar__Scalar_add(u[i0], u[i1]);
-      u[i1] = blstrs__scalar__Scalar_sub(tmp, u[i1]);
-      if(di != 0) u[i1] = blstrs__scalar__Scalar_mul(pq[di << rnd << pqshift], u[i1]);
+      u[i0] = bn254_builder__Scalar_add(u[i0], u[i1]);
+      u[i1] = bn254_builder__Scalar_sub(tmp, u[i1]);
+      if(di != 0) u[i1] = bn254_builder__Scalar_mul(pq[di << rnd << pqshift], u[i1]);
     }
 
     BARRIER_LOCAL();
@@ -731,11 +731,11 @@ KERNEL void blstrs__scalar__Scalar_radix_fft(GLOBAL blstrs__scalar__Scalar* x, /
 }
 
 /// Multiplies all of the elements by `field`
-KERNEL void blstrs__scalar__Scalar_mul_by_field(GLOBAL blstrs__scalar__Scalar* elements,
+KERNEL void bn254_builder__Scalar_mul_by_field(GLOBAL bn254_builder__Scalar* elements,
                         uint n,
-                        blstrs__scalar__Scalar field) {
+                        bn254_builder__Scalar field) {
   const uint gid = GET_GLOBAL_ID();
-  elements[gid] = blstrs__scalar__Scalar_mul(elements[gid], field);
+  elements[gid] = bn254_builder__Scalar_mul(elements[gid], field);
 }
 
 

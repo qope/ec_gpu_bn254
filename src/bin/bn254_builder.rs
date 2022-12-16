@@ -14,24 +14,24 @@ fn u64_to_u32(limbs: &[u64]) -> Vec<u32> {
 pub struct Scalar();
 
 const MODULUS: [u64; 4] = [
-    0xffff_ffff_0000_0001,
-    0x53bd_a402_fffe_5bfe,
-    0x3339_d808_09a1_d805,
-    0x73ed_a753_299d_7d48,
+    0x3c20_8c16_d87c_fd47,
+    0x9781_6a91_6871_ca8d,
+    0xb850_45b6_8181_585d,
+    0x3064_4e72_e131_a029,
 ];
 
 const R: [u64; 4] = [
-    0x0000_0001_ffff_fffe,
-    0x5884_b7fa_0003_4802,
-    0x998c_4fef_ecbc_4ff5,
-    0x1824_b159_acc5_056f,
+    0xd35d_438d_c58f_0d9d,
+    0x0a78_eb28_f5c7_0b3d,
+    0x666e_a36f_7879_462c,
+    0x0e0a_77c1_9a07_df2f,
 ];
 
 const R2: [u64; 4] = [
-    0xc999_e990_f3f2_9c6d,
-    0x2b6c_edcb_8792_5c23,
-    0x05d3_1496_7254_398f,
-    0x0748_d9d9_9f59_ff11,
+    0xf32c_fc5b_538a_fa89,
+    0xb5e7_1911_d445_01fb,
+    0x47ab_1eff_0a41_7ff6,
+    0x06d8_9f71_cab8_351f,
 ];
 
 impl ec_gpu::GpuName for Scalar {
@@ -42,15 +42,15 @@ impl ec_gpu::GpuName for Scalar {
 
 impl ec_gpu::GpuField for Scalar {
     fn one() -> Vec<u32> {
-        crate::u64_to_u32(&R[..])
+        u64_to_u32(&R[..])
     }
 
     fn r2() -> Vec<u32> {
-        crate::u64_to_u32(&R2[..])
+        u64_to_u32(&R2[..])
     }
 
     fn modulus() -> Vec<u32> {
-        crate::u64_to_u32(&MODULUS[..])
+        u64_to_u32(&MODULUS[..])
     }
 }
 
