@@ -1,8 +1,6 @@
 use std::env;
 
-// use blstrs::Scalar;
 use ec_gpu_gen::SourceBuilder;
-// use pairing::bn256::Fr as Scalar;
 
 fn u64_to_u32(limbs: &[u64]) -> Vec<u32> {
     limbs
