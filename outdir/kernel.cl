@@ -256,7 +256,7 @@ uint32_t chain_madhi(chain_t *ch, uint32_t a, uint32_t b, uint32_t c) {
 typedef struct { bn254_builder__Scalar_limb val[bn254_builder__Scalar_LIMBS]; } bn254_builder__Scalar;
 CONSTANT bn254_builder__Scalar bn254_builder__Scalar_ONE = { { 15230403791020821917, 754611498739239741, 7381016538464732716, 1011752739694698287 } };
 CONSTANT bn254_builder__Scalar bn254_builder__Scalar_P = { { 4332616871279656263, 10917124144477883021, 13281191951274694749, 3486998266802970665 } };
-CONSTANT bn254_builder__Scalar bn254_builder__Scalar_R2 = { { 17522657719365597833, 13107472804851548667, 5164255478447964150, 493319470278259999 } };
+CONSTANT bn254_builder__Scalar bn254_builder__Scalar_R2 = { { 17522657719365597825, 13107472804851548667, 5164255478447964150, 493319470278259999 } };
 CONSTANT bn254_builder__Scalar bn254_builder__Scalar_ZERO = { { 0, 0, 0, 0 } };
 #if defined(OPENCL_NVIDIA) || defined(CUDA)
 
